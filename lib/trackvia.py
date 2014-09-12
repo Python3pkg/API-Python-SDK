@@ -21,7 +21,7 @@ class trackvia:
 
 		#Login information
 		values = { 'grant_type' : 'password',
-			  'client_id' : 'xvia-webapp',
+			  'client_id' : 'TrackViaAPI',
 			  'username' : username,
 			  'password' : password}
 
@@ -93,9 +93,9 @@ class trackvia:
 		#Actually do the login and parse the token from the response.
 		resp,body=self.__json_request(self.base_url+"/oauth/token",type="POST",post=values)
 
-		self.token=resp['value']
-		self.refreshToken=resp['refreshToken']
-		self.expiresIn=resp['expires_in']
+		self.token=body['value']
+		self.refreshToken=body['refreshToken']
+		self.expiresIn=body['expires_in']
 
                 self.thread=threading.Timer(self.expiresIn-15, self.__refresh_token)
                 self.thread.daemon = True
