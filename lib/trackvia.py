@@ -210,9 +210,6 @@ class trackvia:
                             "viewId" : viewId }
                 resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records",type='POST', post=json.dumps(post_data), get=get_values, content_type="json")
 
-                #The API returns an array for data, but we only have one record. Make it easier to use by removing the array.
-                body['data']=body['data'][0]
-
 		return resp,body
 
 	def delete_record(self, viewId, recordId):
