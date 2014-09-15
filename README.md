@@ -16,6 +16,5 @@ Note, the API is only available for Enterprise level accounts
 
 First instantiate a TrackViaClient object
 
-TrackViaClient client = TrackviaClient.create(path, scheme, hostName, port, email, password, userKey);
+trackvia = trackvia(url, username, password, userkey);
 
-The client interface is more fully explained in the Java Docs and our Tic-tac-toe tutorial: https://developer.trackvia.com/tutorials/tic-tac-toe
