@@ -26,7 +26,7 @@ class trackvia:
 			  'password' : password}
 
 		#Actually do the login and parse the token from the response.
-                resp,body=self.__json_request(self.base_url+"/oauth/token",post=values)
+                resp,body=self.__json_request("{0}/oauth/token".format(self.base_url),post=values)
 
 		self.token=body['value']
 		self.refreshToken=body['refreshToken']
@@ -34,7 +34,7 @@ class trackvia:
 
 		#Get the account ID that we are dealing with here
 		get_values= {'access_token' : self.token}
-		resp,body=self.__json_request(self.base_url+"/users", type="GET", get=get_values)
+		resp,body=self.__json_request("{0}/users".format(self.base_url), type="GET", get=get_values)
 		self.account_id=body['accounts'][0]['id']
 
 		#Schedule a oauth_token refresh 15s before it expires
@@ -87,12 +87,11 @@ class trackvia:
 		"""This method is used internally to refresh the oauth token."""
 		#Login information
 		values = { 'grant_type' : 'refresh_token',
-			  'client_id' : 'xvia-webapp',
+			  'client_id' : 'TrackViaAPI',
 			  'refresh_token' : self.refreshToken['value']}
 
 		#Actually do the login and parse the token from the response.
-		resp,body=self.__json_request(self.base_url+"/oauth/token",type="POST",post=values)
-
+		resp,body=self.__json_request("{0}/oauth/token".format(self.base_url),type="POST",post=values)
 		self.token=body['value']
 		self.refreshToken=body['refreshToken']
 		self.expiresIn=body['expires_in']
@@ -105,14 +104,14 @@ class trackvia:
 		"""Returns all apps for the logged in account."""
 		get_values={"access_token" : self.token,
 			    "user_key" : self.apikey}
-                resp,body=self.__json_request(self.base_url+"/openapi/apps",type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/apps".format(self.base_url),type='GET', get=get_values)
 		return resp,body
 
         def get_all_views(self):
 		"""Returns all views for the logged in account."""
                 get_values={"access_token" : self.token,
                             "user_key" : self.apikey}
-                resp,body=self.__json_request(self.base_url+"/openapi/views",type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/apps".format(self.base_url),type='GET', get=get_values)
                 return resp,body
 	
 	def get_view(self,viewId):
@@ -120,7 +119,7 @@ class trackvia:
 		get_values={"access_token" : self.token,
                             "user_key" : self.apikey,
             		    "viewId" : viewId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views",type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}".format(self.base_url,viewId),type='GET', get=get_values)
                 return resp,body
 
         def find_records(self,viewId,query,start=0,max=50):
@@ -131,7 +130,7 @@ class trackvia:
 			    "q" : query,
 			    "start": start,
 			    "max": max }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/find",type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/find".format(self.base_url, viewId),type='GET', get=get_values)
                 return resp,body
 
 	def get_all_records(self,viewId,start=0,max=50):
@@ -142,7 +141,7 @@ class trackvia:
 			    "q" : "",
 			    "start": start,
 			    "max":  max }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/find",type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/find".format(self.base_url, viewId),type='GET', get=get_values)
                 return resp,body
 		
 	def get_record(self,viewId,recordId):
@@ -151,7 +150,7 @@ class trackvia:
                             "user_key" : self.apikey,
                             "viewId" : viewId,
                             "recordId" : recordId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId),type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/records/{2}".format(self.base_url, viewId, recordId),type='GET', get=get_values)
 
 		return resp,body
 
@@ -161,7 +160,7 @@ class trackvia:
                             "user_key" : self.apikey,
                             "viewId" : viewId,
                             "recordId" : recordId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId),type='DELETE', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/records/{2}".format(self.base_url, viewId, recordId),type='DELETE', get=get_values)
                 return resp,body
 
 	def delete_file(self, viewId, recordId, fieldName):
@@ -170,7 +169,7 @@ class trackvia:
                             "user_key" : self.apikey,
                             "viewId" : viewId,
                             "recordId" : recordId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId)+"/files/"+fieldName,type='DELETE', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/records/{2}/files/{3}".format(self.base_url, viewId, recordId, fieldName),type='DELETE', get=get_values)
                 return resp,body
 
         def get_file(self, viewId, recordId, fieldName):
@@ -179,7 +178,7 @@ class trackvia:
                             "user_key" : self.apikey,
                             "viewId" : viewId,
                             "recordId" : recordId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId)+"/files/"+fieldName,type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/records/{2}/files/{3}".format(self.base_url, viewId, recordId, fieldName),type='GET', get=get_values)
                 return resp,body
 		
 	def attach_file(self, viewId, recordId, fieldName, file):
@@ -189,17 +188,8 @@ class trackvia:
                             "viewId" : viewId,
                             "recordId" : recordId }
 		file={'file':open(file,'r')}
-		resp,body=self.__post_file(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId)+"/files/"+fieldName,get_values,file)
+		resp,body=self.__post_file("{0}/openapi/views/{1}/records/{2}/files/{3}".format(self.base_url, viewId, recordId, fieldName),get_values,file)
 		return resp,body
-	
-	def delete_file(self, viewId, recordId, fieldName):
-                """Deletes a file from a record"""
-                get_values={"access_token" : self.token,
-                            "user_key" : self.apikey,
-                            "viewId" : viewId,
-                            "recordId" : recordId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId)+"/files/"+fieldName,type="DELETE",get=get_values)
-                return resp,body
 
 	
 	def create_record(self, viewId, data):
@@ -208,7 +198,7 @@ class trackvia:
                 get_values={"access_token" : self.token,
                             "user_key" : self.apikey,
                             "viewId" : viewId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records",type='POST', post=json.dumps(post_data), get=get_values, content_type="json")
+                resp,body=self.__json_request("{0}/openapi/views/{1}/records".format(self.base_url, viewId),type='POST', post=json.dumps(post_data), get=get_values, content_type="json")
 
 		return resp,body
 
@@ -218,7 +208,7 @@ class trackvia:
                             "user_key" : self.apikey,
                             "viewId" : viewId,
                             "recordId" : recordId }
-                resp,body=self.__json_request(self.base_url+"/openapi/views/"+str(viewId)+"/records/"+str(recordId),type="DELETE",get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views/{1}/records/{2}".format(self.base_url, viewId, recordId),type="DELETE",get=get_values)
                 return resp,body
 
 	def get_users(self,start=0,max=50):
@@ -227,7 +217,7 @@ class trackvia:
                             "user_key" : self.apikey,
 			    "start" : start,
 			    "max" : max }
-                resp,body=self.__json_request(self.base_url+"/openapi/users",type="GET",get=get_values)
+                resp,body=self.__json_request("{0}/openapi/users".format(self.base_url),type="GET",get=get_values)
                 return resp,body
 	
 	def create_user(self,email,firstName,lastName,timeZone):
@@ -238,13 +228,13 @@ class trackvia:
 			    "firstName" : firstName,
  			    "lastName" : lastName,
 			    "timeZone" : timeZone }
-                resp,body=self.__json_request(self.base_url+"/openapi/users",type="POST",get=get_values)
+                resp,body=self.__json_request("{0}/openapi/users".format(self.base_url),type="POST",get=get_values)
                 return resp,body
 		
 
 	def __signal_handler(self, signal, frame):
 		"""Internal method for handling signals."""
-        	print("Caught Signal: " + str(signal) )
+        	print("Caught Signal: {0}".format(signal) )
 		self.stop()
 		sys.exit(0)
 
