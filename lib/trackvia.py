@@ -111,7 +111,7 @@ class trackvia:
 		"""Returns all views for the logged in account."""
                 get_values={"access_token" : self.token,
                             "user_key" : self.apikey}
-                resp,body=self.__json_request("{0}/openapi/apps".format(self.base_url),type='GET', get=get_values)
+                resp,body=self.__json_request("{0}/openapi/views".format(self.base_url),type='GET', get=get_values)
                 return resp,body
 	
 	def get_view(self,viewId):
