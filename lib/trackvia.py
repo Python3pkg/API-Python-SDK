@@ -12,10 +12,10 @@ class trackvia:
 
 	def __init__(self, url, username, password, apikey):
 		"""This is a constructor for the TrackVia client."""
-
-    #Register a method to handle signals and close our threads cleanly. Only if part of main thread
-    if __name__ == "__main__":
-      signal.signal(signal.SIGINT, self.__signal_handler)
+	
+		#Register a method to handle signals and close our threads cleanly. Only if part of main thread
+		if __name__ == "__main__":
+			signal.signal(signal.SIGINT, self.__signal_handler)
 		
 		self.base_url=url
 		self.apikey=apikey
@@ -27,7 +27,7 @@ class trackvia:
 			  'password' : password}
 
 		#Actually do the login and parse the token from the response.
-    resp,body=self.__json_request("{0}/oauth/token".format(self.base_url),post=values)
+		resp,body=self.__json_request("{0}/oauth/token".format(self.base_url),post=values)
 
 		self.token=body['value']
 		self.refreshToken=body['refreshToken']
