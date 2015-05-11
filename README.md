@@ -12,7 +12,13 @@ Note, the API is only available for Enterprise level accounts
 
 ## Installation
 
-Install from source
+### Install via pip
+```bash
+pip install trackvia
+```
+
+### Install from source
+You can install this module from source by checking it out and running setup.py. Keep in mind that this module requires urllib3, httplib, and requests.
 ```bash
     git clone https://github.com/Trackvia/API-Python-SDK.git
     cd API-Python-SDK
