@@ -12,11 +12,11 @@ class trackvia:
 
 	def __init__(self, url, username, password, apikey):
 		"""This is a constructor for the TrackVia client."""
-	
+
 		#Register a method to handle signals and close our threads cleanly. Only if part of main thread
 		if __name__ == "__main__":
 			signal.signal(signal.SIGINT, self.__signal_handler)
-		
+
 		self.base_url=url
 		self.apikey=apikey
 
@@ -67,7 +67,7 @@ class trackvia:
 			headers={'Content-Type': 'application/json; charset=UTF-8'}
 		else:
 			headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-		
+
 		h = httplib2.Http()
 		response, content = h.request(url+get_data,type,headers=headers,body=post_data)
 
@@ -75,7 +75,7 @@ class trackvia:
 			body=json.loads(content)
 		except ValueError as e:
 			body=content
- 
+
 		return response,body
 
 	# It is much cleaner to upload multipart files using the Requests framework.
@@ -198,6 +198,16 @@ class trackvia:
 				"user_key" : self.apikey,
 				"viewId" : viewId }
 		resp,body=self.__json_request("{0}/openapi/views/{1}/records".format(self.base_url, viewId),type='POST', post=json.dumps(post_data), get=get_values, content_type="json")
+
+		return resp,body
+
+	def update_record(self, viewId,  recordId, data):
+		"""Updates a record in a view"""
+		post_data={"data":data}
+		get_values={"access_token" : self.token,
+				"user_key" : self.apikey,
+				"viewId" : viewId }
+		resp,body=self.__json_request("{0}/openapi/views/{1}/records/{2}".format(self.base_url, viewId, recordId),type='PUT', post=json.dumps(post_data), get=get_values, content_type="json")
 
 		return resp,body
 
