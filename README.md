@@ -31,6 +31,13 @@ First you must import the library and instantiate the trackvia client object
 ```python
 import trackvia
 trackvia = trackvia.trackvia(url, username, password, userkey)
+
+#create 2 new records in view ID 3
+record1 = {'name': 'John White', 'age': 35}
+record2 = {'name': 'John White', 'age': 35}
+records = [record1, record2]
+
+trackvia.create_record(3, records)
 ```
 
 for more information, you can use pyrdoc on the command line to read the documentation `pydoc trackvia`
