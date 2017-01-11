@@ -34,7 +34,7 @@ trackvia = trackvia.trackvia(url, username, password, userkey)
 
 #create 2 new records in view ID 3
 record1 = {'name': 'John White', 'age': 35}
-record2 = {'name': 'John White', 'age': 35}
+record2 = {'name': 'Charlotte Green', 'age': 29}
 records = [record1, record2]
 
 trackvia.create_record(3, records)
