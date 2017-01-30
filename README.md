@@ -40,4 +40,4 @@ records = [record1, record2]
 trackvia.create_record(3, records)
 ```
 
-for more information, you can use pyrdoc on the command line to read the documentation `pydoc trackvia`
+for more information, you can use pydoc on the command line to read the documentation `pydoc trackvia`
