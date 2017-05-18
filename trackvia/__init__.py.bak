@@ -1,5 +1,5 @@
 #/usr/bin/python
-import urllib.request, urllib.parse, urllib.error
+import urllib
 import httplib2
 import requests
 import json
@@ -50,7 +50,7 @@ class trackvia:
 			post_data=None
 		else:
 			try:
-				post_data = urllib.parse.urlencode(post)
+				post_data = urllib.urlencode(post)
 			except:
 				post_data=post
 
@@ -59,8 +59,8 @@ class trackvia:
 			get_data=""
 		else:
 			get_list=[]
-			for element in list(get.keys()):
-				get_list.append(urllib.parse.quote_plus(element)+"="+urllib.parse.quote_plus(str(get[element])))
+			for element in get.keys():
+				get_list.append(urllib.quote_plus(element)+"="+urllib.quote_plus(str(get[element])))
 			get_data="?"+'&'.join(get_list)
 
 		if content_type=="json":
@@ -242,7 +242,7 @@ class trackvia:
 
 	def __signal_handler(self, signal, frame):
 		"""Internal method for handling signals."""
-		print(("Caught Signal: {0}".format(signal) ))
+		print("Caught Signal: {0}".format(signal) )
 		self.stop()
 		sys.exit(0)
 
